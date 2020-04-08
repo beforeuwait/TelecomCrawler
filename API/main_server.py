@@ -57,13 +57,12 @@ class TCrawlerServer(tornado.web.RequestHandler):
         if case_id and is_verified:
             # 验证详情页面是否验证成功
             return
+            
         data = self.get_argument('data')
         if case_id and data:
             # 返回数据
             return
 
-        
-            
     
     @calculate_run_time
     def do_generate_case_id(self, info: dict) -> None:
