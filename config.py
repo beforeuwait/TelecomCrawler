@@ -21,3 +21,9 @@ EX2 = 'ex2'
 EX3 = 'ex3'
 
 TASK_QUEUE = 'task_queue'
+
+
+# 任务
+
+# 登陆前:
+PRE_LOGIN = 'pre_login'

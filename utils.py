@@ -160,7 +160,7 @@ def connect_redis():
     return rds
 
 
-def push_msg_2_queue(msg, queue):
+def push_msg_2_queue(queue, msg):
     rds = connect_redis()
     if not rds:
         logger.warning('向队列=\t{}推送消息失败\tmsg={1}'.format(queue, json.dumps(msg, ensure_ascii=False)))

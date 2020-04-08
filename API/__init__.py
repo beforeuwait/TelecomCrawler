@@ -41,6 +41,9 @@ __all__ = ['']
 from .utils import api_log
 from .generate_case_id import generate_case_id as generate_case_id_push_2_task_queue
 from utils import hmset_data
+from utils import push_msg_2_queue
 from utils import calculate_md5
 from utils import calculate_function_run_time_ms_for_API as calculate_run_time
+from config import TASK_QUEUE
+from config import PRE_LOGIN
 
