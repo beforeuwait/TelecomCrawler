@@ -59,7 +59,7 @@ def get_request(**kwargs):
             if resp.status_code <= 302:
                 break
         except Exception as e:
-            pass
+            logger.warning('GET 请求出错: url=\t{0}, error:\t{1}'.format(kwargs.get('url'), e))
         retry -= 1
     return resp
 
@@ -77,7 +77,7 @@ def get_request_cu(**kwargs):
             if resp.status_code <= 302:
                 break
         except Exception as e:
-            pass
+            logger.warning('联通 GET 请求出错: url=\t{0}, error:\t{1}'.format(kwargs.get('url'), e))
         retry -= 1
     return resp
 
@@ -95,7 +95,7 @@ def post_request_cu(**kwargs):
             if resp.status_code <= 302:
                 break
         except Exception as e:
-            pass
+            logger.warning('联通 POST 请求出错: url=\t{0}, error:\t{1}'.format(kwargs.get('url'), e))
         retry -= 1
     return resp
 
@@ -114,7 +114,7 @@ def post_request(**kwargs):
             if resp.status_code <= 302:
                 break
         except Exception as e:
-            pass
+            logger.warning('POST 请求出错: url=\t{0}, error:\t{1}'.format(kwargs.get('url'), e))
         retry -= 1
     return resp
 
@@ -162,8 +162,10 @@ def connect_redis():
 
 def push_msg_2_queue(msg, queue):
     rds = connect_redis()
-    if rds:
-        rds.lpush(queue, json.dumps(msg, ensure_ascii=False))
+    if not rds:
+        logger.warning('向队列=\t{}推送消息失败\tmsg={1}'.format(queue, json.dumps(msg, ensure_ascii=False)))
+        return
+    rds.lpush(queue, json.dumps(msg, ensure_ascii=False))
     return
 
 
@@ -175,24 +177,29 @@ def hmset_data(id_key, data_dict):
     每个 key的有效期为 1200秒 20分钟
     """
     rds = connect_redis()
-    if rds:
-        rds.hmset(name=id_key, mapping=data_dict)
-        rds.expire(name=id_key, time=1200)
+    if not rds:
+        logger.warning('向hash table写入失败\tkey={0}, value={1}'.format(id_key, json.dumps(data_dict, ensure_ascii=False)))
+        return
+    rds.hmset(name=id_key, mapping=data_dict)
+    rds.expire(name=id_key, time=1200)
     return
 
 
 def hset_name(id_key, field, value):
     rds = connect_redis()
-    if rds:
-        rds.hset(name=id_key, key=field, value=value)
+    if not rds:
+        logger.warning('向hash set写入失败\tkey={0}, value={1}'.format(id_key, value))
+        return
+    rds.hset(name=id_key, key=field, value=value)
     return
 
 
 def hget_name(id_key, name):
     rds = connect_redis()
-    if rds:
-        return rds.hget(name=id_key, key=name).decode('utf-8')
-    return 
+    if not rds:
+        logger.warning('获取hast set失败\tkey={0}, key={1}'.format(id_key, name))
+        return
+    return rds.hget(name=id_key, key=name).decode('utf-8')
 
 
 def get_current_cookie(id_key):
