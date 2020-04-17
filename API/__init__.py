@@ -5,6 +5,7 @@
 
 check_is_login.py: client轮询case_id状态，返回是否登陆成功
 check_is_verified.py: client轮询case_id状态，返回是否验证成功
+check_is_finished.py: client轮询case_id采集状态，反正是否采集完毕
 generate_case_id.py: 返回api接收到的 md5(手机号 + 时间戳)作为当前的事件id(case_id),然后丢入任务队列，开始预登陆操作
 main_server.py: 对外api
 receive_login_code.py: 处理登录短信验证码，然后丢入任务队列(登录任务)
@@ -27,6 +28,7 @@ utils.py: 工具
     'info': '',
     'is_login': '',
     'is_verify': '',
+    'is_finished': '',
     'html': '',
     'ex1': '',
     'ex2': '',
