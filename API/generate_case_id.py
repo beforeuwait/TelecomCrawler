@@ -8,14 +8,14 @@ from . import hmset_data
 from . import push_msg_2_queue
 
 
-def generate_case_id(info: dict) -> None:
+def generate_case_id(info: dict) -> str:
     # step1: 计算case_id
-    case_id =  calculate_case_id(info.get('phone'))
+    case_id = calculate_case_id(info.get('phone'))
     # step2: 存储信息到hash table里
     save_2_hash_table(case_id, info)
     # task_queue 第一个任务
     msg = {'case_id': case_id, 'task': PRE_LOGIN}
-    psuh_msg_2_task_queue(msg)
+    push_msg_2_task_queue(msg)
     return case_id
 
 
@@ -27,5 +27,5 @@ def save_2_hash_table(case_id: str, info: dict) -> None:
     hmset_data(id_key=case_id, data_dict=info)
 
 
-def psuh_msg_2_task_queue(msg: dict):
+def push_msg_2_task_queue(msg: dict) -> None:
     push_msg_2_queue(queue=TASK_QUEUE, msg=msg)

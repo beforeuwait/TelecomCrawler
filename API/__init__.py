@@ -40,10 +40,25 @@ __all__ = ['']
 
 from .utils import api_log
 from .generate_case_id import generate_case_id as generate_case_id_push_2_task_queue
+from .receive_login_code import receive_login_code_push_2_task_queue
+from .receive_verify_code import receive_verify_code_push_2_task_queue
+from .check_is_login import check_is_login
+from .check_is_verified import check_is_verified
+from .check_is_finished import check_is_finished
+from .get_data import get_user_data
 from utils import hmset_data
+from utils import hset_name
 from utils import push_msg_2_queue
 from utils import calculate_md5
+from utils import hget_name
 from utils import calculate_function_run_time_ms_for_API as calculate_run_time
 from config import TASK_QUEUE
 from config import PRE_LOGIN
-
+from config import LOGING
+from config import LOGIN_CODE
+from config import VERIFY_CODE
+from config import IS_LOGIN
+from config import IS_VERIFIED
+from config import VERIFY
+from config import IS_FINISHED
+from config import USER_DATA
